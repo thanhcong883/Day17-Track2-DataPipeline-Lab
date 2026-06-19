@@ -20,3 +20,9 @@ Answer briefly, in your own words. This is graded on reasoning, not length.
    one where the graph is overkill.
 
 _Write your answers below._
+
+1. **The flywheel:** The recursive `flatten` step (span attribute extraction) breaks most silently. If telemetry key names change upstream, attributes silently resolve to `None`. We can detect this by implementing data validation contracts (e.g., Pandera) verifying that crucial columns are not fully null.
+2. **Decontamination:** Skipping this causes data leakage. The model memorizes the eval answers rather than generalizing, resulting in artificially high offline evaluation metrics (like win rate) while performing poorly in production.
+3. **Point-in-time:** A customer's "active subscription status" or "total spend" prior to a transaction. Joining future values leaks the target label, creating severe training-serving skew.
+4. **Graph vs vector:** A multi-hop question (e.g., finding a warehouse location for a product's accessory) is answered well by KG but missed by flat vector chunks. However, simple queries like "What is the refund window?" are overkill for KG and better handled by vector retrieval.
+
